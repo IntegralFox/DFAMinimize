@@ -1,0 +1,57 @@
+#!/bin/python
+'''
+DFA Minimizer
+'''
+import sys
+from util import *
+
+# File name of DFA spec is the last element of the arg list
+filename = sys.argv[-1]
+if filename == "-" or filename == "minimize":
+	file = stdin
+else:
+	file = open(filename)
+
+# Read in the dfa and extract the states and keys from it
+dfa = readDFA(file)
+states = dfa['state']
+keys = sorted(list(states.keys()))
+alphabet = dfa['alphabet']
+
+# Create a distinction dictionary/map and initialize it with the finality
+# comparison between states
+distinct = {}
+for i in range(0, len(keys) - 1):
+	key = keys[i]
+	distinct[key] = {}
+	# Only compare with the keys that follow the current key
+	compareWith = keys[i + 1:]
+	for compareKey in compareWith:
+		# Set the distinct flag if one state is final and the other not
+		distinct[key][compareKey] = xor(states[key].final, states[compareKey].final)
+
+print(distinct)
+
+# Repeatedly loop over the distinction array updating the distinctions until
+# it no longer gets changed
+modified = True
+while modified:
+	modified = False
+	for key in distinct:
+		for compareKey in distinct[key]:
+			if not distinct[key][compareKey]:
+				for symbol in alphabet:
+					# The jagged distinction matrix uses keys in alphabetical order
+					trans0 = min(
+						states[key].transition[symbol],
+						states[compareKey].transition[symbol]
+					)
+					trans1 = max(
+						states[key].transition[symbol],
+						states[compareKey].transition[symbol]
+					)
+					if trans0 != trans1 and distinct[trans0][trans1]:
+						distinct[key][compareKey] = True
+						modified = True
+
+print(distinct)
