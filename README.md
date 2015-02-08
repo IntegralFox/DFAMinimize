@@ -1,2 +1,2 @@
 # DFAMinimize
-DFA Minimizer in Python and C++
+DFA Minimizer in C++
