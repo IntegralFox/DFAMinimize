@@ -22,8 +22,7 @@ public:
 	friend std::ostream& operator<<(std::ostream&, const DFA&);
 	void minimize();
 	bool inSetofSets(const std::string&, const std::set<std::set<std::string>>&);
-	std::string subsetFind(const std::string&, const std::set<std::string>&);
-	std::string firstSubset(const std::string&);
+	std::string mergedStateFor(const std::string&, const std::set<std::string>&);
 };
 
 #endif
