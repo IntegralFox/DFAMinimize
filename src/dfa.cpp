@@ -129,6 +129,7 @@ void DFA::minimize() {
 	std::set<std::string> newStates {};
 	std::string newStartState {};
 	std::set<std::string> newFinalStates {};
+	std::map<std::string, std::map<std::string, std::string>> newTransition {};
 
 	for (const auto& set : mergedStateSets) {
 		bool isStart = false;
@@ -149,9 +150,21 @@ void DFA::minimize() {
 		if (isFinal) newFinalStates.insert(newState);
 	}
 
+	// For each new merged set, add its transition sets to the new transition table
+	for (const auto& mergedState : newStates) {
+		std::string firstSet = firstSubset(mergedState);
+		for (const auto& symbol : alphabet) {
+			std::string origTransition = transition[firstSet][symbol];
+			std::string mergedTransition = subsetFind(origTransition, newStates);
+			newTransition[mergedState][symbol] = mergedTransition;
+		}
+	}
+
+	// Replace the member attributes with the new ones
 	states      = std::move(newStates);
 	startState  = std::move(newStartState);
 	finalStates = std::move(newFinalStates);
+	transition  = std::move(newTransition);
 }
 
 /* Returns whether a state is contained in one of the sets of states in a set */
@@ -162,4 +175,22 @@ bool DFA::inSetofSets(const std::string& s, const std::set<std::set<std::string>
 		}
 	}
 	return false;
+}
+
+/* Returns the first string from the set that contains the specified string
+   as a substring or an empty string if none exits (REALLY shouldn't happen) */
+std::string DFA::subsetFind(const std::string& needle, const std::set<std::string>& states) {
+	for (const auto& haystack : states) {
+		if (haystack.find(needle) != std::string::npos) return haystack;
+	}
+	return "";
+}
+
+/* Returns the first subset in a merged set */
+std::string DFA::firstSubset(const std::string& mergedStatesSet) {
+	std::string token;
+	std::stringstream source {mergedStatesSet};
+	// First token is { second token is the first set
+	source >> token >> token;
+	return token;
 }
