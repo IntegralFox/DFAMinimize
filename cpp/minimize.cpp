@@ -4,6 +4,8 @@
 #include "dfa.hpp"
 
 int main(int argc, char** argv) {
-	DFA original {std::cin};
-	original.dot(std::cout);
+	DFA automaton {std::cin};
+	automaton.dot(std::cout);
+	automaton.minimize();
+	automaton.dot(std::cout);
 }

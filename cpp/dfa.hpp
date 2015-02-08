@@ -9,16 +9,18 @@
 #include <map>
 
 class DFA {
-	std::set<std::string> state;
+	std::set<std::string> states;
 	std::set<std::string> alphabet;
-	std::string start;
-	std::set<std::string> final;
-	std::map<std::string, std::map<std::string, std::string>> transMap;
+	std::string startState;
+	std::set<std::string> finalStates;
+	std::map<std::string, std::map<std::string, std::string>> transition;
 
 public:
 	DFA() {}
 	DFA(std::istream&);
 	void dot(std::ostream&);
+	void minimize();
+	bool inSetofSets(const std::string&, const std::set<std::set<std::string>>&);
 };
 
 #endif
