@@ -13,7 +13,8 @@ else:
 	file = open(filename)
 
 # Read in the dfa and extract the states and keys from it
-dfa = DFA(file)
+dfa = DFA()
+dfa.read(file)
 
 # Create a distinction dictionary/map and initialize it with the finality
 # comparison between states

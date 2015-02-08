@@ -11,7 +11,14 @@ class State:
 
 
 class DFA:
-	def __init__(self, dfaFile):
+	def __init__(self):
+		self.state = {}
+		self.key = []
+		self.alphabet = []
+		self.start = ''
+		self.final = []
+
+	def read(self, dfaFile):
 		self.state = {}
 		self.key = []
 
