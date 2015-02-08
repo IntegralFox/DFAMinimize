@@ -91,7 +91,6 @@ void DFA::minimize() {
 	bool newlyDistinctElement;
 	do {
 		newlyDistinctElement = false;
-		std::cout << "iteration\n";
 		for (const auto& a : states) {
 			for (const auto& b : states) {
 				if (a == b || distinct[a][b]) continue;
