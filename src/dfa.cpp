@@ -56,11 +56,7 @@ DFA::DFA(std::istream& input) {
 }
 
 // Output the DFA in the graphviz dot language
-void DFA::dot(std::ostream& output) {
-	output << this;
-}
-
-std::ostream& DFA::operator<<(std::ostream& output) {
+void DFA::dot(std::ostream& output) const {
 	output << "digraph DFA {\n";
 	for (const auto& a : transition) {
 		for (const auto& b : a.second) {
@@ -69,6 +65,10 @@ std::ostream& DFA::operator<<(std::ostream& output) {
 		}
 	}
 	output << "}\n" << std::flush;
+}
+
+std::ostream& operator<<(std::ostream& output, const DFA& dfa) {
+	dfa.dot(output);
 	return output;
 }
 
@@ -148,8 +148,6 @@ void DFA::minimize() {
 		if (isStart) newStartState = newState;
 		if (isFinal) newFinalStates.insert(newState);
 	}
-
-	// TO DO: create new transition table
 
 	states      = std::move(newStates);
 	startState  = std::move(newStartState);

@@ -5,7 +5,7 @@
 
 int main(int argc, char** argv) {
 	DFA automaton {std::cin};
-	automaton.dot(std::cout);
+	std::cout << automaton;
 	automaton.minimize();
-	automaton.dot(std::cout);
+	std::cout << automaton;
 }

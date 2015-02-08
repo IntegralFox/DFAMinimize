@@ -18,8 +18,8 @@ class DFA {
 public:
 	DFA() {}
 	DFA(std::istream&);
-	void dot(std::ostream&);
-	std::ostream& operator<<(std::ostream&);
+	void dot(std::ostream&) const;
+	friend std::ostream& operator<<(std::ostream&, const DFA&);
 	void minimize();
 	bool inSetofSets(const std::string&, const std::set<std::set<std::string>>&);
 };
