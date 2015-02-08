@@ -13,22 +13,19 @@ else:
 	file = open(filename)
 
 # Read in the dfa and extract the states and keys from it
-dfa = readDFA(file)
-states = dfa['state']
-keys = sorted(list(states.keys()))
-alphabet = dfa['alphabet']
+dfa = DFA(file)
 
 # Create a distinction dictionary/map and initialize it with the finality
 # comparison between states
 distinct = {}
-for i in range(0, len(keys) - 1):
-	key = keys[i]
+for i in range(0, len(dfa.key) - 1):
+	key = dfa.key[i]
 	distinct[key] = {}
 	# Only compare with the keys that follow the current key
-	compareWith = keys[i + 1:]
+	compareWith = dfa.key[i + 1:]
 	for compareKey in compareWith:
 		# Set the distinct flag if one state is final and the other not
-		distinct[key][compareKey] = xor(states[key].final, states[compareKey].final)
+		distinct[key][compareKey] = xor(dfa.state[key].final, dfa.state[compareKey].final)
 
 print(distinct)
 
@@ -38,20 +35,24 @@ modified = True
 while modified:
 	modified = False
 	for key in distinct:
+		print("key: " + key)
 		for compareKey in distinct[key]:
+			print("compare: " + compareKey)
 			if not distinct[key][compareKey]:
-				for symbol in alphabet:
+				print("checking distinction")
+				for symbol in dfa.alphabet:
 					# The jagged distinction matrix uses keys in alphabetical order
 					trans0 = min(
-						states[key].transition[symbol],
-						states[compareKey].transition[symbol]
+						dfa.state[key].transition[symbol],
+						dfa.state[compareKey].transition[symbol]
 					)
 					trans1 = max(
-						states[key].transition[symbol],
-						states[compareKey].transition[symbol]
+						dfa.state[key].transition[symbol],
+						dfa.state[compareKey].transition[symbol]
 					)
+					print("transition on " + symbol + " to " + trans0 + trans1)
 					if trans0 != trans1 and distinct[trans0][trans1]:
+						print("is distinct")
 						distinct[key][compareKey] = True
 						modified = True
-
-print(distinct)
+						print("modfied")
