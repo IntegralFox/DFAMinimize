@@ -57,9 +57,9 @@ DFA::DFA(std::istream& input) {
 
 // Output the DFA in the graphviz dot language
 void DFA::dot(std::ostream& output) const {
-	output << "digraph DFA {\nrankdir=LR;\n";
-	output << "\tnode [shape = none]; \"\";\n";
-	output << "\t node [shape = doublecircle];";
+	output << "digraph DFA {\n\trankdir=LR;\n";
+	output << "\tnode [shape = none] [width = 0] [fixedsize = true]; \"\";\n";
+	output << "\tnode [shape = doublecircle] [fixedsize = false];";
 	for (const auto& state: finalStates) {
 		output << " \"" << state << "\"";
 	}
