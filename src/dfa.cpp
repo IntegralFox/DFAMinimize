@@ -57,6 +57,10 @@ DFA::DFA(std::istream& input) {
 
 // Output the DFA in the graphviz dot language
 void DFA::dot(std::ostream& output) {
+	output << this;
+}
+
+std::ostream& DFA::operator<<(std::ostream& output) {
 	output << "digraph DFA {\n";
 	for (const auto& a : transition) {
 		for (const auto& b : a.second) {
@@ -65,6 +69,7 @@ void DFA::dot(std::ostream& output) {
 		}
 	}
 	output << "}\n" << std::flush;
+	return output;
 }
 
 // Collapses the DFA into its minimum representation

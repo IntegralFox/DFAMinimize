@@ -19,6 +19,7 @@ public:
 	DFA() {}
 	DFA(std::istream&);
 	void dot(std::ostream&);
+	std::ostream& operator<<(std::ostream&);
 	void minimize();
 	bool inSetofSets(const std::string&, const std::set<std::set<std::string>>&);
 };
