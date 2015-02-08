@@ -83,11 +83,13 @@ void DFA::minimize() {
 	}
 
 	// Iterate over the distinct table until no new elements are distinct
-	bool newlyDistinctElement = false;
-	while (newlyDistinctElement) {
+	bool newlyDistinctElement;
+	do {
+		newlyDistinctElement = false;
+		std::cout << "iteration\n";
 		for (const auto& a : states) {
 			for (const auto& b : states) {
-				if (a == b) continue; // No state can be distinct from itself
+				if (a == b || distinct[a][b]) continue;
 				for (const auto& s : alphabet) {
 					// Get the transition state for each state
 					auto aD = transition[a][s];
@@ -99,7 +101,7 @@ void DFA::minimize() {
 				}
 			}
 		}
-	}
+	} while (newlyDistinctElement);
 
 	// Merge indistinguishable states by grouping them into sets within a set
 	std::set<std::set<std::string>> mergedStateSets {};
@@ -141,6 +143,8 @@ void DFA::minimize() {
 		if (isStart) newStartState = newState;
 		if (isFinal) newFinalStates.insert(newState);
 	}
+
+	// TO DO: create new transition table
 
 	states      = std::move(newStates);
 	startState  = std::move(newStartState);
