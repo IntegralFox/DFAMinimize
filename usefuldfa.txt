@@ -1,0 +1,14 @@
+A B C D E
+0 1
+A
+E
+A 0 B
+A 1 C
+B 0 D
+B 1 D
+C 0 D
+C 1 D
+D 0 E
+D 1 E
+E 0 E
+E 1 E
