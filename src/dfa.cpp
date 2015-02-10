@@ -35,17 +35,19 @@ DFA::DFA(std::istream& input) {
 		ssline.clear();
 		ssline.str(line);
 		std::string a, symbol, b;
-		ssline >> a >> symbol >> b;
-		if (
-			states.find(a) == states.end() ||
-			states.find(b) == states.end() ||
-			alphabet.find(symbol) == alphabet.end()
-		) {
-			throw std::domain_error {"Transition rule contains invalid "
-				"state(s) or symbol: " + line};
+		// Skip empty last line (or any between rules for that matter)
+		if (ssline >> a >> symbol >> b) {
+			if (
+				states.find(a) == states.end() ||
+				states.find(b) == states.end() ||
+				alphabet.find(symbol) == alphabet.end()
+			) {
+				throw std::domain_error {"Transition rule contains invalid "
+					"state(s) or symbol: " + line};
+			}
+			transition[a][symbol] = b;
+			++count;
 		}
-		transition[a][symbol] = b;
-		++count;
 	}
 
 	// Throw exception if there aren't enough rules
