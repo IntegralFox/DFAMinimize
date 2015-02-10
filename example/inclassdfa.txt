@@ -1,0 +1,16 @@
+A B C D E F
+0 1
+A
+B E
+A 0 B
+A 1 D
+B 0 F
+B 1 E
+C 0 B
+C 1 F
+D 0 E
+D 1 A
+E 0 C
+E 1 B
+F 0 E
+F 1 C
