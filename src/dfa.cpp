@@ -42,7 +42,7 @@ DFA::DFA(std::istream& input) {
 				states.find(b) == states.end() ||
 				alphabet.find(symbol) == alphabet.end()
 			) {
-				throw std::domain_error {"Transition rule contains invalid "
+				throw std::runtime_error {"Transition rule contains invalid "
 					"state(s) or symbol: " + line};
 			}
 			transition[a][symbol] = b;
@@ -52,7 +52,7 @@ DFA::DFA(std::istream& input) {
 
 	// Throw exception if there aren't enough rules
 	if (count != states.size() * alphabet.size()) {
-		throw std::length_error {"There are not the appropriate amount of "
+		throw std::runtime_error {"There are not the appropriate number of "
 			"transition rules for the FA to be deterministic"};
 	}
 }

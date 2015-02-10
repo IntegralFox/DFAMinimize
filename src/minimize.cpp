@@ -2,22 +2,31 @@
 #include <iostream>
 #include <fstream>
 #include <memory>
+#include <stdexcept>
 #include "dfa.hpp"
 
 int main(int argc, char** argv) {
 	if (argc == 1) {
-		std::cerr << "No DFA file specified." << std::endl;
-		return 0;
+		std::cerr << "minimize: No DFA file specified" << std::endl;
+		return 1;
 	}
 
-	// Acquire the files
-	std::string filename {argv[1]};
-	std::ifstream dfaFile {filename};
-	std::ofstream dotFile {filename + ".dot"}, minDotFile {filename + "-min.dot"};
+	try {
+		// Open the DFA and create the DFA object
+		std::string filename {argv[1]};
+		std::ifstream dfaFile {filename};
+		DFA automaton {dfaFile};
 
-	// Create a DFA object and minimize
-	DFA automaton {dfaFile};
-	dotFile << automaton;
-	automaton.minimize();
-	minDotFile << automaton;
+		// Open the output file and output the original DFA in the dot language
+		std::ofstream dotFile {filename + ".dot"};
+		dotFile << automaton;
+
+		// Open the output file and output the minimized DFA
+		std::ofstream minDotFile {filename + "-min.dot"};
+		automaton.minimize();
+		minDotFile << automaton;
+	} catch (std::runtime_error e) {
+		std::cerr << "minimize: " << e.what() << std::endl;
+		return 2;
+	}
 }
